@@ -1,0 +1,78 @@
+---
+name: tactile-learning
+description: Convert any course material, lecture notes, reading, or topic into study artifacts matched to a hands-on, code-oriented learner who struggles with rote memorization. Use this skill whenever the user wants to study, learn, revise, review, prepare for an exam or quiz, "make sense of" a topic, turn lecture notes or a reading into study material, or asks how to learn/remember something. Trigger on phrases like "help me study X", "I have an exam on Y", "turn these notes into something I can learn from", "I can't remember this", "make flashcards / a study guide / practice for X", or any time the user shares course content (information science, programming, theory) and wants to absorb it. Default to BUILDING an interactive artifact, not writing prose. Do not just summarize — generate something the learner can DO.
+---
+ 
+# Tactile Learning
+ 
+This skill encodes a specific learner profile and turns any material into study artifacts that fit it. The whole point: this learner does **not** learn by reading and re-reading. They learn by **doing, building, and retrieving** — and they need memorization scaffolded, never assumed.
+ 
+## The learner profile (this is fixed — design every output around it)
+ 
+**Strengths — lean on these hard:**
+- **Tactile / hands-on** — learns by manipulating, dragging, clicking, building, sorting. An interactive widget beats a paragraph every time.
+- **Coding & debugging** — comfortable reading and fixing code. Concepts land when framed as code, traced through execution, or presented as a bug to find.
+- **Short definitions + descriptive bullets** — absorbs crisp, atomic chunks. One term, one tight definition, a few descriptive bullets. Not flowing prose.
+**Weakness — actively compensate, never ignore:**
+- **Memorizing information** — does NOT retain by exposure or repetition-reading. Facts must be converted into *retrieval practice, spaced repetition, mnemonics, or doing*. If an output relies on the learner "just remembering" something, it has failed.
+## The core rule
+ 
+> **Do not explain a topic. Build the learner something they can DO with the topic.**
+ 
+Prose is the fallback of last resort. When you catch yourself writing three paragraphs of explanation, stop — that's exactly the format this learner doesn't retain. Convert it.
+ 
+## How to convert ANY material (the workflow)
+ 
+When the user gives you a topic, notes, reading, or lecture content:
+ 
+1. **Atomize.** Break the material into the smallest standalone units — one concept, term, rule, or step each. This matches the "short definition + bullets" strength and makes everything else (cards, quizzes) possible.
+2. **Pick the format** using the decision guide below. Most material maps to *retrieval practice* + *one tactile artifact*. Never default to a written summary.
+3. **Build an interactive artifact** (HTML/React) as the primary deliverable, because tactile + interactive is where retention happens for this learner. Inline prose is only for a quick answer or a definition the user explicitly asked for.
+4. **Bake in retrieval, not exposure.** Every artifact must make the learner *produce* the answer (type it, drag it, pick it, fix the code) before revealing it. Passive flashcards that just flip are weak; cards that ask the learner to commit first are strong.
+5. **Add a memory scaffold** for anything that genuinely must be memorized (lists, taxonomies, definitions): a mnemonic, a chunking scheme, an analogy to code, or a spaced-repetition order. State it explicitly — don't assume repetition will do the job.
+## Format decision guide
+ 
+Match the material to the artifact. Combine freely.
+ 
+| Material type | Best artifact | Why it fits |
+|---|---|---|
+| Definitions, terminology, taxonomies | **Active-recall flashcards** (commit-then-reveal) + mnemonic | Converts memorization into retrieval |
+| Processes, algorithms, workflows | **Drag-to-order / step-sequencer** widget | Tactile ordering beats memorizing a list |
+| Concepts with structure (models, frameworks, ER diagrams, classification) | **Labeled interactive diagram** or build-it-yourself canvas | Manipulating structure encodes it |
+| Anything expressible as code | **Code trace** ("what does this output?") or **debug-the-bug** exercise | Plays directly to coding/debugging strength |
+| Rules, conditions, "when do you use X vs Y" | **Scenario sorter** — drag cases into the right bucket | Retrieval + judgment, not recall |
+| Comparisons (X vs Y vs Z) | **Interactive comparison table** the learner fills in, then checks | Producing the cells > reading them |
+| Whole-topic revision before an exam | **Mixed quiz** (MCQ + type-answer + code) with immediate feedback | Spaced, interleaved retrieval |
+ 
+See `references/study-patterns.md` for ready-to-use templates and code patterns for each of these.
+ 
+## Artifact requirements
+ 
+Every interactive study artifact should:
+- **Force a commit before reveal.** Learner types/picks/drags an answer, *then* sees if they're right. No passive flip-throughs.
+- **Give immediate, specific feedback.** "Not quite — a `unique_ptr` can't be copied, only moved" teaches; "Wrong" doesn't.
+- **Track what was missed** and let the learner re-drill only the misses (this is the spacing mechanism — missed items resurface).
+- **Use short definitions + descriptive bullets** in all explanatory text. Atomic chunks, never paragraphs.
+- **Frame in code where the topic allows it.** An analogy to a class, pointer, loop, or bug lands harder than an abstract definition for this learner.
+- **Stay self-contained** — no localStorage/sessionStorage in Claude.ai artifacts; hold state in memory (useState).
+## Mnemonics & memory scaffolds (the weakness compensator)
+ 
+When something must be memorized, never leave the learner to brute-force it. Provide at least one of:
+- **Mnemonic / acronym** for ordered lists or sets.
+- **Chunking** — group 7±2 items into named clusters.
+- **Code analogy** — map the concept onto something programmatic they already hold.
+- **Story / absurd image** — exploits the fact that vivid beats repeated.
+- **Spaced ordering** — tell them what to drill today vs tomorrow vs in 3 days, hardest items first.
+Always *state the scaffold explicitly* in the output so it's reusable.
+ 
+## What NOT to do
+ 
+- Don't answer a "help me study X" request with paragraphs of explanation and stop there.
+- Don't make flashcards that only flip — make them demand a committed answer first.
+- Don't present a list to memorize without a mnemonic or chunking scheme.
+- Don't bury the definition in prose — lead with the short definition, then descriptive bullets.
+- Don't assume re-reading will work. It won't, for this learner. Convert to doing.
+## Quick reference: the one-line test
+ 
+Before delivering, ask: **"Does this make the learner DO something and RETRIEVE the answer, or does it just show them information?"** If it's the latter, convert it before sending.
+ 
